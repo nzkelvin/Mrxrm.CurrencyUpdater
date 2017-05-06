@@ -7,7 +7,9 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
+#pragma warning disable SA1649 // File name must match first type name
     public interface ICurrencyExchanger
+#pragma warning restore SA1649 // File name must match first type name
     {
         Dictionary<string, decimal> GetExchangeRates();
     }
