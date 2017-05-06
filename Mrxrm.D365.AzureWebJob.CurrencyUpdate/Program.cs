@@ -1,27 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Xrm.Client.Services;
-using Microsoft.Xrm.Sdk;
-using Microsoft.Xrm.Sdk.Messages;
-using Mrxrm.D365.AzureWebJob.CurrencyUpdate.Models.D365;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Ninject;
-
-namespace Mrxrm.D365.AzureWebJob.CurrencyUpdate
+﻿namespace Mrxrm.D365.AzureWebJob.CurrencyUpdate
 {
+    using System;
+    using System.Linq;
+    using Microsoft.Azure.WebJobs;
+    using Microsoft.Xrm.Client.Services;
+    using Microsoft.Xrm.Sdk;
+    using Microsoft.Xrm.Sdk.Messages;
+    using Mrxrm.D365.AzureWebJob.CurrencyUpdate.Models.D365;
+    using Ninject;
+
     // To learn more about Microsoft Azure WebJobs SDK, please see https://go.microsoft.com/fwlink/?LinkID=320976
-    class Program
+    public class Program
     {
         // Please set the following connection strings in app.config for this WebJob to run:
         // AzureWebJobsDashboard and AzureWebJobsStorage
-        // todo: !important! Those two connection strings should be manually added to Azure portal.
-        static void Main()
+        public static void Main()
         {
             var config = new JobHostConfiguration();
 
@@ -32,13 +25,12 @@ namespace Mrxrm.D365.AzureWebJob.CurrencyUpdate
 
             Console.WriteLine("Start Currency Update");
 
-            //IoC
+            // IoC
             var kernel = new Ninject.StandardKernel();
             kernel.Bind<ICurrencyExchanger>().To<CurrencyExchanger>();
             kernel.Bind<IOrganizationService>().ToConstructor(x => new OrganizationService(x.Inject<string>())).WithConstructorArgument("connectionStringName", "Xrm");
             kernel.Bind<ICrmServiceContext>().To<CrmServiceContext>().WithConstructorArgument("service", kernel.Get<IOrganizationService>());
 
-            
             Execute(kernel.Get<ICurrencyExchanger>(), kernel.Get<ICrmServiceContext>());
         }
 
@@ -55,8 +47,11 @@ namespace Mrxrm.D365.AzureWebJob.CurrencyUpdate
 
             // Get base currency
             var baseIso = ctx.OrganizationSet
-                .Join(ctx.TransactionCurrencySet, o => o.BaseCurrencyId.Id, c => c.TransactionCurrencyId,
-                    (o, c) => new {o, c})
+                .Join(
+                    ctx.TransactionCurrencySet,
+                    o => o.BaseCurrencyId.Id,
+                    c => c.TransactionCurrencyId,
+                    (o, c) => new { o, c })
                 .Select(j => j.c.ISOCurrencyCode)
                 .First();
 
@@ -73,7 +68,10 @@ namespace Mrxrm.D365.AzureWebJob.CurrencyUpdate
 
             foreach (var c in currencies)
             {
-                if (c.ISOCurrencyCode == baseIso) continue;
+                if (c.ISOCurrencyCode == baseIso)
+                {
+                    continue;
+                }
 
                 var rate = exchangeRates[c.ISOCurrencyCode] / baseCurrencyRate;
 

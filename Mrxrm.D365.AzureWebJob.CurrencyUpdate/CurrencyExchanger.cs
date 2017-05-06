@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
-namespace Mrxrm.D365.AzureWebJob.CurrencyUpdate
+﻿namespace Mrxrm.D365.AzureWebJob.CurrencyUpdate
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+
     public interface ICurrencyExchanger
     {
         Dictionary<string, decimal> GetExchangeRates();
@@ -18,7 +18,7 @@ namespace Mrxrm.D365.AzureWebJob.CurrencyUpdate
 
         public CurrencyExchanger()
         {
-            _exchangeApiUrl = System.Configuration.ConfigurationManager.AppSettings["ExchangeApiUrl"];
+            this._exchangeApiUrl = System.Configuration.ConfigurationManager.AppSettings["ExchangeApiUrl"];
         }
 
         public Dictionary<string, decimal> GetExchangeRates()
@@ -26,7 +26,7 @@ namespace Mrxrm.D365.AzureWebJob.CurrencyUpdate
             Dictionary<string, decimal> exchangeRates = Task.Run(new Func<Task<Dictionary<string, decimal>>>(async () =>
                 {
                     HttpClient client = new HttpClient();
-                    var response = await client.GetAsync(_exchangeApiUrl);
+                    var response = await client.GetAsync(this._exchangeApiUrl);
                     if (response.IsSuccessStatusCode)
                     {
                         var result = await response.Content.ReadAsStringAsync();
