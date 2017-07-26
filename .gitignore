@@ -263,3 +263,4 @@ __pycache__/
 # Configuration Settings
 ConnectionStrings.config
 AppSettings.config
+local.settings.json
