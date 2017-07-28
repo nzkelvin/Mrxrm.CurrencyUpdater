@@ -40,7 +40,7 @@ namespace Mrxrm.D365.CurrencyUpdate.AzureFunction
                     JObject jResult = JObject.Parse(result);
                     var rates = JsonConvert.DeserializeObject<Dictionary<string, decimal>>(jResult["rates"].ToString());
 
-                    return rates;
+                    return new Dictionary<string, decimal>(rates, StringComparer.InvariantCultureIgnoreCase);
                 }
                 else
                 {
