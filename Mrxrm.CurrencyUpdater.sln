@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26510.0
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mrxrm.D365.AzureWebJob.CurrencyUpdate", "Mrxrm.D365.AzureWebJob.CurrencyUpdate\Mrxrm.D365.AzureWebJob.CurrencyUpdate.csproj", "{1D23367F-C657-4951-915F-56A3B2013E28}"
 EndProject
@@ -29,5 +29,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {31CC79CD-C96E-41FF-8533-FEFDBB9E92EB}
 	EndGlobalSection
 EndGlobal
